@@ -22,12 +22,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # 3. Build the Docker image
+      # 3. Build Docker image
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/${{ github.repository }}/api-shop:${{ github.sha }} ./api
+          REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          docker build -t ghcr.io/$REPO_NAME/api-shop:${{ github.sha }} ./api
 
-      # 4. Push the Docker image to GHCR
+      # 4. Push Docker image to GHCR
       - name: Push Docker image to GHCR
         run: |
-          docker push ghcr.io/${{ github.repository }}/api-shop:${{ github.sha }}
+          REPO_NAME=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          docker push ghcr.io/$REPO_NAME/api-shop:${{ github.sha }}
